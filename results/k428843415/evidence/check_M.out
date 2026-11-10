@@ -1,0 +1,22 @@
+Q on E: 1
+torsion: 1
+R(t) is a square: 1
+pi(t, +-v) == Q: 1
+h(Q) = 217.955784834261512763684652657497206769406100727086220614791
+analytic rank 1; BSD Reg*Sha = 217.955784834261512763684652657497206769406100727086220614791
+h(Q) / (Reg*Sha) = 1.00000000000000000000000000000000000000000000000000000000000
+Q not in 2E(Q): witness p=17
+Q not in 3E(Q): witness p=17
+Q not in 5E(Q): witness p=29
+Q not in 7E(Q): witness p=41
+Q not in 11E(Q): witness p=131
+Q not in 13E(Q): witness p=233
+Q not in 17E(Q): witness p=101
+Q not in 19E(Q): witness p=113
+Q not in 23E(Q): witness p=137
+Q not in 29E(Q): witness p=173
+Q not in 31E(Q): witness p=43
+Q not in 37E(Q): witness p=439
+Q not in 41E(Q): witness p=983
+Q not in 43E(Q): witness p=31
+Q not in 47E(Q): witness p=281

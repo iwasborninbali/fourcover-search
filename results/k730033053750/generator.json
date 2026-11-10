@@ -1,0 +1,60 @@
+{
+ "curve": "y^2 = x^3 + 730033053750",
+ "ainvs": [
+  0,
+  0,
+  0,
+  0,
+  730033053750
+ ],
+ "k_factorization": "2 * 3^5 * 5^4 * 7^5 * 11 * 13",
+ "conductor": 389577988800,
+ "torsion": "trivial",
+ "status": "E(Q) = Z*Q, proved. Rank <= 1: PARI 2.19 ellrank with certified cubic-field data (bnfcertify = 1), see certified_rank.gp. Index: Voutier-Yabuta height bounds in exact rational arithmetic give index <= 8 (height_certificate.py), and reduction certificates exclude every prime up to that bound (check_exact.py); Sage/mwrank saturation (eclib's own index bound 28, primes <= 23) independently gives index 1 (evidence/).",
+ "source_of_target": "Best-Matschke unknown list (ec-data-S6 data/mwMordellUnknown.txt, commit c31a0f6)",
+ "generator_Q": [
+  "-127864540025905752836434190966519096512662851319608332803792635443060325/2732848049858431036813881997543283958563840470801202716717782207848409",
+  "-122065928537596706107228249110895040861755243563538764427408281909699946209705677476565196173561467921763824675/142864138774358023251040652571655140848277152021135716683738993203046179270987130401371701590136836137827"
+ ],
+ "height_Q_pari": "167.305352650339009493697376979353511091881223257604344614595",
+ "bsd_check": "h(Q) / (L'(1)/ellbsd) = 1.000... to 60 digits (consistent with Sha = 1; numerical, not a proof of BSD)",
+ "provenance": {
+  "two_cover": "ell2cover c1: v^2 = 4620 t^4 - 21000 t^3 - 41580 t^2 - 50820 t + 26565",
+  "t": "-652261919404834031/162343171503721777",
+  "four_cover": "Long's relative four-descent above c1 (882a0dac, proof=True): one soluble class, label 156; reduced by search4.py (5-digit quadrics)",
+  "u_on_four_cover": [
+   "2045913748",
+   "-1557028403",
+   "-858328586",
+   "334741533"
+  ],
+  "found_by": "elkies4.c at H = 3e9 (about 0.5 h on one VM core)"
+ },
+ "isogenous_curve": {
+  "ainvs": [
+   0,
+   0,
+   0,
+   0,
+   -27038261250
+  ],
+  "generator": [
+   "95360591856776654142439432719617457757681424013848328493879436782344072160818636401925403073074226372478943949185567246172679901843060279364301015307763246914030634278510237801207994529166938254835632035338340040913451/643395795326632839969803855703454983032720890051785258377933326354332524509370613178559173732573613385125315289655601148527420780129686880109151307563150919115172217056926770637680797058952775531811524212804489",
+   "-931222384265733614266053864419369163150216218196170921359148156128370812408916403799591979261667503525955033575532470304357389946364705961468172335123624829957483913248593237940260582075452289029835513870875953865955509835326404952298911397966941497222560165863775639535283359727428868203916115862988871388504258126173652109199/516080354977262574778924990410714369501901713881341357832779208509720277803136040371969276127207266059308090762433315734702828918811788774300529095714131491304855421972966779215057128250275302688084990055276152295112165283166228840444753268156501338469870719667289102955053180005271159259160991745900184951140607013"
+  ],
+  "height": "501.916057951017",
+  "saturation_index": 1,
+  "note": "image of Q under the 3-isogeny; equals the BSD product 501.91606 (Sha = 1 numerically)"
+ },
+ "checks": [
+  "check_exact.py (Python stdlib)",
+  "height_certificate.py (Python stdlib)",
+  "certified_rank.gp (PARI 2.19)",
+  "evidence/verify-M.log (Sage chain: four-cover -> t -> v^2 = R(t) -> E)",
+  "evidence/check_M.gp/.out (PARI: on E, map, height, Q not in pE for p <= 47)",
+  "evidence/certified_rank_M.gp/.out (bnfcertify = 1, rank bounds [1, 1])",
+  "evidence/saturate_M.log (Sage/mwrank saturation, index 1)",
+  "evidence/isog_M.log (3-isogenous generator, saturated)"
+ ],
+ "novelty": "No earlier generator found in the public sources checked on 10 Nov 2026 (S6 MW basis files at c31a0f6, mwAll.sobj at 97034f2, web searches for the coordinates). Best-Matschke mention ten bases communicated privately by A. MacLeod without naming the curves; overlap with those is not excluded. Reported to the data authors: https://github.com/elliptic-curve-data/ec-data-S6/issues/3"
+}

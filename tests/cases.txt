@@ -1,0 +1,2 @@
+# coefficient-file  H  expected primitive point u (sign-free); each case must yield exactly one POINT
+tests/curve6-c2-385.coef 1.2e7 10051625 -4664062 -2274152 1284630

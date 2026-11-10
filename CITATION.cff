@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: >-
+  If you use this software or its results, please cite it as below.
+title: "fourcover-search: an open-source four-descent and Elkies-type lattice search for rational points on elliptic curves"
+authors:
+  - family-names: Kudriashov
+    given-names: Aleksei
+    orcid: "https://orcid.org/0009-0006-8885-5338"
+abstract: >-
+  A pipeline with no Magma dependency: PARI 2-descent, C. D. Long's relative four-descent, reduction of the four-cover,
+  and an Elkies-type lattice search on the intersection of two quadrics in P^3. The search uses osculating boxes along
+  the real locus and quad-precision geometry, and checks every candidate exactly. It produced generators for
+  y^2 = x^3 + 730033053750 and y^2 = x^3 + 428843415, two cases left open in the Best-Matschke S6 Mordell data, with
+  proofs that they generate E(Q). The search code, pipeline and proofs were produced by AI agents (Anthropic Claude;
+  OpenAI Codex cores for adversarial audits) under the direction of the author of record, who takes responsibility for
+  the content.
+version: "1.0"
+date-released: "2026-11-11"
+license: MIT
+repository-code: "https://github.com/iwasborninbali/fourcover-search"
+keywords:
+  - elliptic curves
+  - Mordell curves
+  - four-descent
+  - lattice reduction
+  - rational points

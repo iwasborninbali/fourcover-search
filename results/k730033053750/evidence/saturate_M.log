@@ -1,0 +1,27 @@
+Q on E, order: +Infinity torsion: 1
+CPS-type lower bound for heights of nontorsion points (Sage height_function().min): 0.20377867626770474 seconds 2.1
+P1 = [-6684329701948393776258865941739501989391548405866415831942160431850947192892267466625615579760957932135975:-122065928537596706107228249110895040861755243563538764427408281909699946209705677476565196173561467921763824675:142864138774358023251040652571655140848277152021135716683738993203046179270987130401371701590136836137827]	  is generator number 1
+saturating basis (reg=167.3053527)...Saturation index bound (for points of good reduction)  = 28
+Tamagawa index primes are [ 3 ]
+Saturation primes are now[ 2 3 5 7 11 13 17 19 23 ]
+Checking saturation at [ 2 3 5 7 11 13 17 19 23 ]
+Checking 2-saturation 
+Points were proved 2-saturated (max q used = 17)
+Checking 3-saturation 
+Points were proved 3-saturated (max q used = 17)
+Checking 5-saturation 
+Points were proved 5-saturated (max q used = 29)
+Checking 7-saturation 
+Points were proved 7-saturated (max q used = 19)
+Checking 11-saturation 
+Points were proved 11-saturated (max q used = 131)
+Checking 13-saturation 
+Points were proved 13-saturated (max q used = 43)
+Checking 17-saturation 
+Points were proved 17-saturated (max q used = 101)
+Checking 19-saturation 
+Points were proved 19-saturated (max q used = 113)
+Checking 23-saturation 
+Points were proved 23-saturated (max q used = 137)
+done
+saturation result (points, index, regulator): ([(-127864540025905752836434190966519096512662851319608332803792635443060325/2732848049858431036813881997543283958563840470801202716717782207848409 : -122065928537596706107228249110895040861755243563538764427408281909699946209705677476565196173561467921763824675/142864138774358023251040652571655140848277152021135716683738993203046179270987130401371701590136836137827 : 1)], 1, 167.305352650339) seconds 0.2

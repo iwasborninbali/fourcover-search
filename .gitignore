@@ -1,0 +1,9 @@
+src/elkies4
+src/elkies4q
+runs/
+search4-*.json
+results/*/exact-check.json
+results/*/independent-check.json
+results/*/height-certificate.json
+__pycache__/
+.DS_Store

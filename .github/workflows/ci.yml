@@ -1,0 +1,18 @@
+name: tests
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  search:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Regression tests (elkies4, elkies4q)
+        run: tests/run_tests.sh
+      - name: Stdlib certificates for the two Mordell curves
+        run: |
+          for d in results/k730033053750 results/k428843415; do
+            (cd "$d" && python3 -I check_exact.py > /dev/null && python3 -I height_certificate.py > /dev/null && echo "ok $d")
+          done
