@@ -18,6 +18,7 @@ abstract: >-
 version: "1.0"
 date-released: "2026-11-11"
 license: MIT
+doi: 10.5281/zenodo.24115003
 repository-code: "https://github.com/iwasborninbali/fourcover-search"
 keywords:
   - elliptic curves
