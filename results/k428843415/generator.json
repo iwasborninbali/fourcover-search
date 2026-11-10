@@ -21,15 +21,15 @@
  "provenance": {
   "two_cover": "ell2cover c1: v^2 = -104 t^4 + 1144 t^3 + 1872 t^2 - 4108 t + 14105",
   "t": "149103631471577628622190/87526920682404705781569",
-  "four_cover": "Long's relative four-descent above c1 (882a0dac, proof=True): one soluble class, label 5; reduced by search4.py (4-digit quadrics)",
+  "four_cover": "Long's relative four-descent above c1 (882a0dac, proof=True): one locally soluble model class, label 5; reduced by search4.py (4-digit quadrics)",
   "u_on_four_cover": [
    "197583119918",
    "-91072156347",
    "23386753154",
    "37742511007"
   ],
-  "found_by": "elkies4q.c (osculating box, quad precision) at H = 2e12, second half of the real component, after about 12 h on one VM core; earlier null runs: elkies4.c H = 1e10 (8 h), PARI ellheegner (8 h timeout)",
-  "calibration": "log max|u| = 25.99 = h/8 - 1.25"
+  "found_by": "elkies4q.c (osculating box, quad precision), H = 2e12, VOL = 64, nominal second half [0.5, 1) of the discovered real component: point emitted after about 12 h on the winning VM core while the first half ran on a second core; not a completed search. Earlier attempts returned no point: elkies4.c at H = 1e10 (about 8 h), and PARI ellheegner terminated at an 8 h timeout.",
+  "calibration": "log max|u| = 26.0094251931 = h_PAR/8 - 1.2350479112 (rounded; observed on this model only)"
  },
  "isogenous_curve": {
   "ainvs": [
@@ -45,7 +45,7 @@
   ],
   "height": "653.867354502785",
   "saturation_index": 1,
-  "note": "image of Q under the 3-isogeny; equals the BSD product 653.86735 (Sha = 1 numerically)"
+  "note": "image of Q under the 3-isogeny (with the recorded model isomorphism); its PARI-normalized height numerically agrees with L'(1)/ellbsd, approximately 653.86735. This is consistent with Sha = 1 under BSD, not a proof about Sha."
  },
  "checks": [
   "check_exact.py (Python stdlib)",

@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Regression tests (elkies4, elkies4q)
-        run: tests/run_tests.sh
+        run: REQUIRE_QUAD=1 tests/run_tests.sh
       - name: Stdlib certificates for the two Mordell curves
         run: |
           for d in results/k730033053750 results/k428843415; do

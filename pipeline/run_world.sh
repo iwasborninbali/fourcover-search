@@ -4,7 +4,8 @@
 #   2. elkies4q (or elkies4): lattice search on Q2 = Q3 = 0 for each H in H_LIST, smallest first;
 #   3. dense_solve.py: exact solution of any DENSE slice the search reports;
 #   4. search4.py again: exact verification of every POINT, mapped down to E.
-# Stops at the first H that yields a point. Completeness of the search is NOT certified (see README).
+# Stops at the first H that yields a point verified exactly on the four-cover and on E (FOUND + POINT_ON_E);
+# candidates that fail verification are reported and the ladder continues. Completeness is NOT certified (see README).
 #
 # Usage:  pipeline/run_world.sh WORLD_JSON "COVERS" "H_LIST" [VOL]
 #   WORLD_JSON   written by pipeline/export_world.gp
@@ -49,16 +50,19 @@ for H in $HLIST; do
       { grep -h ^POINT "$o.out" "$o.dense" || true; } | awk -v l="$lab" '{print l, $2, $3, $4, $5, 1}' > "$o.points"
       if [ -s "$o.points" ]; then
         WORLD_JSON=$W $SAGE_PY "$HERE/search4.py" "$cv" 0 "$o.points" > "$o.verify"
-        echo "FOUND cover $cv four-cover $lab H $H"
-        python3 - "$o.verify" <<'EOF'
+        onE=$(python3 - "$o.verify" <<'EOF'
 import json, sys
 for line in open(sys.argv[1]):
     if line.startswith('{'):
         for v in json.loads(line).get('verified', []):
-            if v.get('on_E'):
+            if v.get('on_four_cover') and v.get('on_E'):
                 print('POINT_ON_E', v['Q'][0], v['Q'][1], 'height', v['height_Q'])
 EOF
-        exit 0
+)
+        if [ -n "$onE" ]; then
+          echo "FOUND cover $cv four-cover $lab H $H"; echo "$onE"; exit 0
+        fi
+        echo "CANDIDATES_NOT_VERIFIED cover $cv four-cover $lab H $H (see $o.verify); continuing"
       fi
       echo "NULL cover $cv four-cover $lab H $H ($(grep ^DONE "$o.out"))"
     done

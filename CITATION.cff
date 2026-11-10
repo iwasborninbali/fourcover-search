@@ -9,16 +9,22 @@ authors:
 abstract: >-
   A pipeline with no Magma dependency: PARI 2-descent, C. D. Long's relative four-descent, reduction of the four-cover,
   and an Elkies-type lattice search on the intersection of two quadrics in P^3. Following Elkies (2000), the search uses
-  higher-order (osculating) boxes along the real locus; geometry is in quad precision, and every candidate is checked
-  exactly. Completeness is not certified. It produced generators for
-  y^2 = x^3 + 730033053750 and y^2 = x^3 + 428843415, two cases left open in the Best-Matschke S6 Mordell data, with
-  proofs that they generate E(Q). The search code, pipeline and proofs were produced by AI agents (Anthropic Claude;
+  higher-order (osculating) boxes along the real locus; geometry and LLL use quad precision, enumeration uses long
+  double, and candidates undergo fixed-width integer checks whose exactness requires avoiding overflow.
+  Completeness is not certified. The pipeline found generators for y^2 = x^3 + 730033053750 using elkies4 and
+  y^2 = x^3 + 428843415 using elkies4q, both listed in the public Best-Matschke S6 unknown data at c31a0f6.
+  Their generator proofs include independent arbitrary-precision checks; historical priority remains unresolved.
+  Our code is MIT-licensed; our generated data and documentation are CC BY 4.0. Dependencies retain their own licenses. The search code, pipeline and proofs were produced by AI agents (Anthropic Claude;
   OpenAI Codex cores for adversarial audits) under the direction of the author of record, who takes responsibility for
   the content.
 version: "1.0"
 date-released: "2026-11-11"
 license: MIT
-doi: 10.5281/zenodo.24115003
+doi: 10.5281/zenodo.24115004
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.24115003
+    description: All versions (concept DOI)
 repository-code: "https://github.com/iwasborninbali/fourcover-search"
 keywords:
   - elliptic curves

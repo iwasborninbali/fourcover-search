@@ -21,7 +21,7 @@
  "provenance": {
   "two_cover": "ell2cover c1: v^2 = 4620 t^4 - 21000 t^3 - 41580 t^2 - 50820 t + 26565",
   "t": "-652261919404834031/162343171503721777",
-  "four_cover": "Long's relative four-descent above c1 (882a0dac, proof=True): one soluble class, label 156; reduced by search4.py (5-digit quadrics)",
+  "four_cover": "Long's relative four-descent above c1 (882a0dac, proof=True): one locally soluble model class, label 156; reduced by search4.py (5-digit quadrics)",
   "u_on_four_cover": [
    "2045913748",
    "-1557028403",
@@ -44,7 +44,7 @@
   ],
   "height": "501.916057951017",
   "saturation_index": 1,
-  "note": "image of Q under the 3-isogeny; equals the BSD product 501.91606 (Sha = 1 numerically)"
+  "note": "image of Q under the 3-isogeny (with the recorded model isomorphism); its PARI-normalized height numerically agrees with L'(1)/ellbsd, approximately 501.91606. This is consistent with Sha = 1 under BSD, not a proof about Sha."
  },
  "checks": [
   "check_exact.py (Python stdlib)",

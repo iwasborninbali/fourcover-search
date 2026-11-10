@@ -7,7 +7,7 @@ An open-source pipeline, with no Magma dependency, for finding rational points o
 goes through four-covers: PARI 2-descent, then C. D. Long's relative four-descent, then reduction, then an Elkies-type
 lattice search on the intersection of two quadrics in P³.
 
-With it we found generators for two curves that were open in the S6 Mordell data of Best and Matschke
+With it we found explicit generators for two curves listed in Best–Matschke's public S6 unknown list at commit `c31a0f6`; priority remains unresolved
 ([ec-data-S6 issue #3](https://github.com/elliptic-curve-data/ec-data-S6/issues/3)):
 
 | curve | conductor | ĥ(generator) (PARI normalization) | search bound H on the four-cover | status |
@@ -22,11 +22,11 @@ The coordinates, the proofs and the scripts that check them are in [`results/`](
 
 | path | what |
 |---|---|
-| `src/elkies4q.c` | the search. It traces the real locus of Q2 = Q3 = 0 on S³ and cuts it into segments. Each segment gets an osculating box (tangent, second-difference normal, complement), with the segment length adapted so that the box volume stays about VOL. Geometry and LLL are done in `__float128`, then Fincke–Pohst enumeration, then an exact `__int128` check of every candidate. The number of segments grows like H^(2/3). This is the higher-order variant that Elkies already describes (2000, §§2.3–2.4: widths of order ε, ε², ε³ for a curve in P³). |
-| `src/elkies4.c` | the first version: double precision, both normals given the same width, cost about H^(4/5). Its H·10⁻¹⁶ safety margin dominates the box once H ≳ 10¹⁰. Use it where `__float128` is unavailable (e.g. Apple arm64). |
-| `pipeline/export_world.gp` | PARI `ell2cover`: the 2-covers v² = R(t) of E with exact maps to E, as JSON |
-| `pipeline/search4.py` | Sage: Long's relative four-descent above one 2-cover, reduction of each soluble four-cover (LLL against the trace form), the reduced quadrics for the search, and exact verification of found points down to E |
-| `pipeline/dense_solve.py` | Sage: exact solution of the rare "dense" slices that the search hands over |
+| `src/elkies4q.c` | the search. It traces the real locus of Q2 = Q3 = 0 on S³ and cuts it into segments. Each segment gets an osculating box (tangent, second-difference normal, complement), with the segment length adapted so that the box volume stays about VOL. Geometry and LLL are done in `__float128`, followed by Fincke–Pohst enumeration in `long double` and a fixed-width `__int128` candidate check. Integer arithmetic must remain in range. Generic width scaling predicts about H^(2/3) segments; this is not a proved running-time or coverage guarantee for the implementation. This is the higher-order variant that Elkies already describes (2000, §§2.3–2.4: widths of order ε, ε², ε³ for a curve in P³). |
+| `src/elkies4.c` | the first version: C `long double` geometry and LLL (precision is platform-dependent), with both normals given the same width. The nominal segment-count scaling is H^(4/5); the fixed precision padding can make enumeration much more expensive. Its H·10⁻¹⁶ padding dominated the normal widths near H = 10¹⁰ on the recorded model. It is the available fallback where `__float128` is unavailable (e.g. Apple arm64). |
+| `pipeline/export_world.gp` | PARI `ell2cover`: a basis of everywhere locally soluble 2-covers v² = R(t), with maps to E, as JSON |
+| `pipeline/search4.py` | Sage: Long's relative four-descent above one selected 2-cover, trace-form LLL reduction of returned candidate models not marked locally insoluble, reduced search quadrics, and exact checks for successfully mapped points on E. The wrapper does not assert `R.complete` or `R.certified`. |
+| `pipeline/dense_solve.py` | Sage: exact solver for the `DENSE` slices handed over by the search; a `DEGENERATE` record or solver failure leaves that slice unresolved |
 | `pipeline/run_world.sh` | all of the above, end to end, for a ladder of bounds H |
 | `tests/` | regression tests (run in CI on every pull request) |
 | `bench/` | the benchmark case and reference timings |
@@ -38,11 +38,11 @@ reduced four-cover, but this is not guaranteed:
 - real components are found from random seeds;
 - the box widths are estimated from each segment's endpoints and are not a containment bound;
 - enumeration runs in `long double`;
+- integer basis updates and coordinate reconstruction use unchecked `long long` arithmetic, and the equation test uses fixed-width `__int128`;
+- `DENSE` slices require a successful separate solve; `DONE` from the C program alone is not completion of that work, and `DEGENERATE` is unresolved;
 - H is not an enforced cutoff.
 
-An independent audit gave an explicit example of a direction in which a curve can vanish at both endpoints of a segment
-but not between them. A null result is therefore evidence, not proof. Every point that is reported has been checked
-exactly.
+An independent audit exhibited a smooth quadric intersection and a linear functional that vanishes at an arc's endpoints and midpoint but not throughout its interior. This refutes a general endpoint-only containment argument; it is not a demonstrated missed rational point in the production runs. A null result proves no nonexistence statement. C candidates undergo fixed-width integer testing, and successfully mapped pipeline points undergo exact Sage checks. Both deposited outputs have separately passed arbitrary-precision integer/rational checks.
 
 ## Quick start
 
@@ -58,13 +58,12 @@ src/elkies4q H VOL SEEDS [F0 F1] < cover.coef     # e.g. src/elkies4q 3e9 64 200
 ```
 
 The output has one `POINT u0 u1 u2 u3` line per primitive point found, `DENSE` lines (slices for `dense_solve.py`),
-`COMPONENT` lines and a final `DONE` line with counts. With `F0 F1`, only the fraction [F0, F1) of each real component is
-searched, so several cores can split one curve.
+`COMPONENT` lines and a final `DONE` line with counts. With `F0 F1`, the nominal fraction [F0, F1) of each discovered component is searched, using a coarse length estimate and overlap at internal boundaries, so several cores can share the work. `DONE` does not certify coverage or completion of any `DENSE` slices.
 
 ### A whole curve
 
 Requirements: PARI/GP ≥ 2.15, SageMath, and a checkout of
-[long-algorithms/elliptic-descent](https://github.com/long-algorithms/elliptic-descent) (tested at commit `882a0dac`).
+[long-algorithms/elliptic-descent](https://github.com/long-algorithms/elliptic-descent) (tested at commit `882a0dac`). The current reduction adapter assumes an irreducible degree-four R(t); it does not support all quartic factor types handled by Long's library. The map checker also leaves q1 = 0 and R(t) = 0 charts unhandled.
 
 ```
 echo 'A = [0,0,0,0,730033053750]; NAME = "M730033053750";' | cat - pipeline/export_world.gp | gp -q -f > world.json
@@ -72,9 +71,7 @@ export SAGE_PYTHON="sage -python" ELLIPTIC_DESCENT_SRC=/path/to/elliptic-descent
 pipeline/run_world.sh world.json c1 "1e8 1e9 3e9"
 ```
 
-This prints `FOUND ...` and `POINT_ON_E x y height h` when a point appears. To choose H, a useful rule of thumb on our
-reduced four-covers is log max|u| ≈ ĥ/8 + c, with c between −1.3 and +0.6 in the two cases above. ĥ can be predicted from
-BSD (`ellbsd`, `ellanalyticrank`).
+It prints `FOUND ...` and `POINT_ON_E x y height h` only for a point verified exactly on the four-cover and on E; candidates that fail verification are reported as `CANDIDATES_NOT_VERIFIED` and the ladder continues. For the two recorded reduced models, the observed offsets log max|u| − ĥ/8 are approximately +0.52594 and −1.23505, respectively, using PARI heights. These two observations provide no guaranteed range for another model or point. On a rank-one curve with trivial torsion, assuming BSD and Sha = 1, L'(1)/`ellbsd` estimates the generator height in this normalization; `ellanalyticrank` and this numerical estimate are not rank or height certificates.
 
 ## Reproduce the two results
 
@@ -85,16 +82,14 @@ python3 height_certificate.py    # Python stdlib: Voutier–Yabuta height bounds
 gp -q -f < certified_rank.gp     # PARI 2.19: rank <= 1 with certified class-group data (bnfcertify = 1)
 ```
 
-Together these prove E(Q) = Z·Q without Sage. `evidence/` holds the original logs, including Sage/mwrank saturation as an
-independent second proof of index 1. Each `generator.json` records how the point was found.
+Run the same three commands in `results/k730033053750` as well; its height certificate gives index at most 8. In each PARI replay, require every `CERTIFY` value to be 1, the rank upper bound to be 1, and the printed local reduction data to satisfy the height theorem's hypotheses. The GP scripts print these results rather than asserting success. Together with the exact equation, torsion and reduction checks, these prove E(Q) = Z·Q without Sage. The partner proof uses the dual isogeny and a separate certificate excluding index 3. `evidence/` holds the original logs, including a separate Sage/mwrank computation of index 1; this shares the rank argument. Each `generator.json` records discovery provenance.
 
 ## Benchmarks
 
 See [`bench/README.md`](bench/README.md). On one core of an x86_64 VM:
 
 - **H = 10¹⁰, k = 428843415 four-cover:** `elkies4q` finished the null run in 59 min, against about 8 h for `elkies4`.
-- **H = 3·10⁹, k = 730033053750 four-cover:** `elkies4q` re-finds the known point in about 21 min (VOL 64). The point was
-  first found by `elkies4`.
+- **H = 3·10⁹, k = 730033053750 four-cover:** at VOL 64, the two half-search processes took 9 min 19 s and 11 min 37 s (20 min 56 s summed); the second half recovered the point. These are completed half-search durations, not a measurement of an unsplit run or time to first point. The point was first found by `elkies4`.
 
 Part of the speed-up comes from removing `elkies4`'s precision margin, not only from the box shape. We have **not**
 compared these programs with any other implementation. For scale, Watkins's notes on the Elkies algorithm report a search
@@ -118,8 +113,7 @@ The four-descent is C. D. Long's `elliptic-descent` (MIT), used unmodified. The 
 are PARI/GP. The method follows N. D. Elkies, *Rational points near curves and small nonzero |x³ − y²| via lattice
 reduction* (ANTS-IV, 2000). The height bounds are from P. Voutier and M. Yabuta (arXiv:1305.6560). The curves come
 from the list of unresolved cases in A. J. Best and B. Matschke's S6 data. We make no claim of a new algorithm: the
-higher-order boxes and the H^(2/3) count are in Elkies's paper, and specialized implementations exist (e.g. Magma's
-`PointsQI`, after Womack and Watkins). The contribution is an open implementation joined to an open descent pipeline,
+higher-order boxes and the H^(2/3) exponent up to logarithmic factors are in [Elkies's paper](https://arxiv.org/abs/math/0005139), §§2.3–2.4. [Womack](https://johncremona.github.io/theses/womack.pdf), §2.9, gives an earlier p-adic quadric-intersection search; [Watkins](https://magma.maths.usyd.edu.au/~watkins/papers/padic.ps) gives a higher-order p-adic construction. Magma's [`PointsQI`](https://magma.maths.usyd.edu.au/magma/handbook/text/1570) is documented as p-adic with O(B^(2/3)) running time; it is not evidence for the details of this real-place frame. The contribution is an open implementation joined to an open descent pipeline,
 and the data it produced.
 
 ## License

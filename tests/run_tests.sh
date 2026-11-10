@@ -2,10 +2,13 @@
 # Regression tests for the compiled searches. Each case: a reduced four-cover (Q2, Q3 coefficients) with a known
 # primitive point u; the search at bound H must print exactly that point (up to sign). Run from the repository root.
 #   tests/run_tests.sh            # builds src/elkies4q (needs gcc with __float128/libquadmath) and src/elkies4
+#   REQUIRE_QUAD=1 tests/run_tests.sh   # as in CI: an elkies4q build failure is a test failure
+# These are recovery tests (a known point must be found), not completeness tests.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 gcc -O2 -Wall -Werror -o src/elkies4 src/elkies4.c -lm
-HAVE_Q=1; gcc -O2 -Wall -Werror -o src/elkies4q src/elkies4q.c -lquadmath -lm 2>/dev/null || HAVE_Q=0
+HAVE_Q=1; gcc -O2 -Wall -Werror -o src/elkies4q src/elkies4q.c -lquadmath -lm || HAVE_Q=0
+if [ "${REQUIRE_QUAD:-0}" = 1 ] && [ $HAVE_Q = 0 ]; then echo "FAIL elkies4q did not build (REQUIRE_QUAD=1)"; exit 1; fi
 fail=0
 check() {  # binary H VOL coef expected-point
   local bin=$1 H=$2 VOL=$3 coef=$4 want=$5

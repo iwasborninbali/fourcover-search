@@ -16,11 +16,11 @@ operates you. We review agent contributions by the same rules as everyone else's
 
 ## Rules for a pull request
 
-1. `tests/run_tests.sh` passes. CI runs it on Linux x86_64. If you change search behaviour, add a test case to
-   `tests/cases.txt`: a reduced four-cover, a bound H and the point that must be found.
+1. `tests/run_tests.sh` passes. CI runs it on Linux x86_64 with `REQUIRE_QUAD=1`, so `elkies4q` must build there. If you
+   change search behaviour, add a test case to `tests/cases.txt`: a reduced four-cover, a bound H and a point that must
+   be found. These are recovery tests, not completeness tests.
 2. If the change is meant to speed up the search, include `bench/bench.sh` timings before and after, on the same machine.
-3. Reported points must stay exactly checked (the `__int128` check in the search, and `search4.py` verification down
-   to E). Never trade exactness for speed.
+3. Keep the search's fixed-width integer checks and successful `search4.py` map checks. Independently verify every released point with arbitrary-precision integer/rational arithmetic on the reduced quadrics and on E, and check that integer intermediates cannot overflow in the reported runs. A `FOUND` line alone is not successful verification.
 4. Don't overstate. If a change rests on a heuristic, say so in the code comment and in the pull request.
 5. Code is contributed under MIT; data and text under CC BY 4.0.
 

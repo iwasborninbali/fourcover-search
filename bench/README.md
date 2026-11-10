@@ -3,7 +3,7 @@
 `bench/bench.sh [binary] [VOL]` re-finds the four-cover point of the generator of y² = x³ + 730033053750
 (`results/k730033053750/cover-c1-156.coef`, u = (2045913748, −1557028403, −858328586, 334741533)) with H = 3·10⁹.
 
-Reference timings: one core of an AMD EPYC VM (x86_64), gcc 13.3 `-O2`, single-threaded.
+Historical search-kernel timings: AMD EPYC VM (x86_64), gcc 13.3 `-O2`, one thread per process; descent, model reduction and certification are excluded. The 9 min 19 s + 11 min 37 s entry adds two completed half-search process durations. The 12 h entry is approximate time to the point in an unfinished half-search while another half-search occupied a second core. No timing is a certificate of complete coverage.
 
 | program | case | H | VOL | wall time | result |
 |---|---|---|---|---|---|
