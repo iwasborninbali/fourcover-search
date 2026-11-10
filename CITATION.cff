@@ -17,14 +17,17 @@ abstract: >-
   Our code is MIT-licensed; our generated data and documentation are CC BY 4.0. Dependencies retain their own licenses. The search code, pipeline and proofs were produced by AI agents (Anthropic Claude;
   OpenAI Codex cores for adversarial audits) under the direction of the author of record, who takes responsibility for
   the content.
-version: "1.0"
+version: "1.1"
 date-released: "2026-11-11"
 license: MIT
-doi: 10.5281/zenodo.24115004
+doi: 10.5281/zenodo.24115003
 identifiers:
   - type: doi
     value: 10.5281/zenodo.24115003
-    description: All versions (concept DOI)
+    description: All versions (concept DOI; resolves to the latest version)
+  - type: doi
+    value: 10.5281/zenodo.24115004
+    description: Version 1.0
 repository-code: "https://github.com/iwasborninbali/fourcover-search"
 keywords:
   - elliptic curves
