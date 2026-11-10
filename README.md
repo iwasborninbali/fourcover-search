@@ -19,7 +19,7 @@ The coordinates, the proofs and the scripts that check them are in [`results/`](
 
 | path | what |
 |---|---|
-| `src/elkies4q.c` | the search. It traces the real locus of Q2 = Q3 = 0 on S³ and cuts it into segments. Each segment gets an osculating box (tangent, second-difference normal, complement), with the segment length adapted so that the box volume stays about VOL. Geometry and LLL are done in `__float128`, then Fincke–Pohst enumeration, then an exact `__int128` check of every candidate. Cost grows like H^(2/3) segments. |
+| `src/elkies4q.c` | the search. It traces the real locus of Q2 = Q3 = 0 on S³ and cuts it into segments. Each segment gets an osculating box (tangent, second-difference normal, complement), with the segment length adapted so that the box volume stays about VOL. Geometry and LLL are done in `__float128`, then Fincke–Pohst enumeration, then an exact `__int128` check of every candidate. The number of segments grows like H^(2/3). This is the higher-order variant that Elkies already describes (2000, §§2.3–2.4: widths of order ε, ε², ε³ for a curve in P³). |
 | `src/elkies4.c` | the first version: double precision, both normals given the same width, cost about H^(4/5). Its H·10⁻¹⁶ safety margin dominates the box once H ≳ 10¹⁰. Use it where `__float128` is unavailable (e.g. Apple arm64). |
 | `pipeline/export_world.gp` | PARI `ell2cover`: the 2-covers v² = R(t) of E with exact maps to E, as JSON |
 | `pipeline/search4.py` | Sage: Long's relative four-descent above one 2-cover, reduction of each soluble four-cover (LLL against the trace form), the reduced quadrics for the search, and exact verification of found points down to E |
@@ -30,9 +30,16 @@ The coordinates, the proofs and the scripts that check them are in [`results/`](
 | `results/` | the two curves: world files, reduced four-covers, generators, certificates, logs |
 
 **Completeness is not certified.** The searches are designed to find every primitive integer point with |u|₂ ≤ H on the
-reduced four-cover. However, real components are found from random seeds, the box widths rest on numerical curvature
-estimates, and H is not an enforced cutoff. A null result is evidence, not proof. Every point that is reported has been
-checked exactly.
+reduced four-cover, but this is not guaranteed:
+
+- real components are found from random seeds;
+- the box widths are estimated from each segment's endpoints and are not a containment bound;
+- enumeration runs in `long double`;
+- H is not an enforced cutoff.
+
+An independent audit gave an explicit example of a direction in which a curve can vanish at both endpoints of a segment
+but not between them. A null result is therefore evidence, not proof. Every point that is reported has been checked
+exactly.
 
 ## Quick start
 
@@ -83,10 +90,13 @@ independent second proof of index 1. Each `generator.json` records how the point
 See [`bench/README.md`](bench/README.md). On one core of an x86_64 VM:
 
 - **H = 10¹⁰, k = 428843415 four-cover:** `elkies4q` finished the null run in 59 min, against about 8 h for `elkies4`.
-- **H = 3·10⁹, k = 730033053750 four-cover:** `elkies4q` re-finds the known point in about 21 min (VOL 64).
+- **H = 3·10⁹, k = 730033053750 four-cover:** `elkies4q` re-finds the known point in about 21 min (VOL 64). The point was
+  first found by `elkies4`.
 
-We have **not** compared these programs with any other implementation. Measured comparisons with other open-source point
-searchers are a welcome contribution.
+Part of the speed-up comes from removing `elkies4`'s precision margin, not only from the box shape. We have **not**
+compared these programs with any other implementation. For scale, Watkins's notes on the Elkies algorithm report a search
+with H = 2·10¹² taking "about a day". Measured comparisons with other open-source point searchers are a welcome
+contribution, for example Sage's `projective_rational_point.sieve` on the same quadrics.
 
 ## Contributing: people and agents welcome
 
@@ -104,7 +114,10 @@ cores for the adversarial audits) under the direction of the author of record, w
 The four-descent is C. D. Long's `elliptic-descent` (MIT), used unmodified. The 2-descent and the certified rank bounds
 are PARI/GP. The method follows N. D. Elkies, *Rational points near curves and small nonzero |x³ − y²| via lattice
 reduction* (ANTS-IV, 2000). The height bounds are from P. Voutier and M. Yabuta (arXiv:1305.6560). The curves come
-from the list of unresolved cases in A. J. Best and B. Matschke's S6 data. We make no claim of a new algorithm.
+from the list of unresolved cases in A. J. Best and B. Matschke's S6 data. We make no claim of a new algorithm: the
+higher-order boxes and the H^(2/3) count are in Elkies's paper, and specialized implementations exist (e.g. Magma's
+`PointsQI`, after Womack and Watkins). The contribution is an open implementation joined to an open descent pipeline,
+and the data it produced.
 
 ## License
 
