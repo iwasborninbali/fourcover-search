@@ -1,7 +1,7 @@
 # fourcover-search
 
 **Archived on Zenodo:** all versions, concept DOI [10.5281/zenodo.24115003](https://doi.org/10.5281/zenodo.24115003);
-v1.0: [10.5281/zenodo.24115004](https://doi.org/10.5281/zenodo.24115004).
+v1.1: [10.5281/zenodo.24115646](https://doi.org/10.5281/zenodo.24115646); v1.0: [10.5281/zenodo.24115004](https://doi.org/10.5281/zenodo.24115004).
 
 An open-source pipeline, with no Magma dependency, for finding rational points of large height on elliptic curves over Q. It
 goes through four-covers: PARI 2-descent, then C. D. Long's relative four-descent, then reduction, then an Elkies-type
